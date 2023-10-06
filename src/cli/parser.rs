@@ -1,11 +1,16 @@
+use clap::Parser;
+
+#[derive(Parser, Debug)]
 pub struct CliArgs {
-    pub config: Option<String>
-/*pub operation: Operation,*/
-}
+    #[clap(short, long, required = true)]
+    pub operation: String,
 
-pub fn parse_args() -> CliArgs {
+    #[clap(short, long)]
+    pub repository: Option<String>,
 
-    CliArgs {
-        config: None
-    }
+    #[clap(short = 'd', long = "directory")]
+    pub directory: Option<String>,
+
+    #[clap(short = 's', long = "source")]
+    pub source: Option<String>,
 }
