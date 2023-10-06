@@ -21,6 +21,7 @@ src/
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
 *.orig
+./*.env
 
 # Created by git when using merge tools for conflicts
 *.BACKUP.*
@@ -230,3 +231,4 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/rust,intellij+all,macos,windows,visualstudiocode,git,linux,archlinuxpackages
 "#
+.env
