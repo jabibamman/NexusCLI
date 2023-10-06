@@ -1,18 +1,14 @@
-use std::process::exit;
 use crate::cli::parser::CliArgs;
-use curl::easy::{Easy};
-use cli_clipboard;
 use crate::DOMAIN;
 use crate::PROXY;
+use cli_clipboard;
+use curl::easy::Easy;
+use std::process::exit;
 
 pub fn delete(args: CliArgs) {
-    let repository:&str = args.repository.as_ref().unwrap();
+    let repository: &str = args.repository.as_ref().unwrap();
     let directory = args.directory.as_ref().unwrap();
-    let url = format!("{}/repository/{}/{}",
-        DOMAIN,
-        repository,
-        directory,
-    );
+    let url = format!("{}/repository/{}/{}", DOMAIN, repository, directory,);
 
     println!("Voulez vous éxecuter la commande curl avec l'url : {}", url);
     println!("O/N");
@@ -41,8 +37,7 @@ pub fn delete(args: CliArgs) {
 
         let command = format!("curl{} -k -X DELETE {}", proxy, url);
         cli_clipboard::set_contents(command.to_owned()).unwrap();
-   }
+    }
 
     exit(0);
-
 }

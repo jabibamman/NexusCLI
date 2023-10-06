@@ -1,6 +1,6 @@
 use std::env;
 use std::fs::File;
-use std::io::{Write, BufReader, BufRead};
+use std::io::{BufRead, BufReader, Write};
 use std::path::Path;
 
 fn main() {
@@ -28,6 +28,11 @@ fn main() {
         writeln!(f, "pub const DOMAIN: &'static str = \"{}\";", d).unwrap();
     }
     if let Some(p) = proxy {
-        writeln!(f, "pub const PROXY: Option<&'static str> = Some(\"{}\");", p).unwrap();
+        writeln!(
+            f,
+            "pub const PROXY: Option<&'static str> = Some(\"{}\");",
+            p
+        )
+        .unwrap();
     }
 }
