@@ -25,7 +25,7 @@ NexusCLI is a command-line tool written in Rust for managing operations on a Nex
 Clone the repository:
 
 ```sh
-git clone https://github.com/your_username/NexusCLI.git
+git clone https://github.com/jabibamman/NexusCLI.git
 cd NexusCLI
 ```
 
@@ -82,3 +82,5 @@ nexus --operation D -r depot-local -d rp/omer/ihm/homere-DV05.zip
 1. Happy coding!
 
 ## License
+
+[MIT License](https://raw.githubusercontent.com/jabibamman/NexusCLI/master/LICENSE)
