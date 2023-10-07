@@ -6,22 +6,24 @@ use cli_clipboard;
 use std::collections::HashMap;
 use std::process::exit;
 
-pub fn delete(args: CliArgs) {
+pub fn upload(args: CliArgs) {
     let repository: &str = args.repository.as_ref().unwrap();
     let directory = args.directory.as_ref().unwrap();
     let url = format!("{}/repository/{}/{}", DOMAIN, repository, directory,);
 
+    let mut curl_args = HashMap::new();
+    let source_file = args.source.as_ref().unwrap();
+    curl_args.insert("upload-file", source_file);
+
     println!(
-        "Voulez-vous éxecuter la commande DELETE curl avec l'url : {}",
+        "Voulez-vous éxecuter la commande POST curl avec l'url : {}",
         url
     );
     println!("O/N");
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).unwrap();
     if input.trim().to_uppercase() == "O".to_uppercase() {
-        let curl_args = HashMap::new();
-
-        match execute_curl_request(&url, "DELETE", curl_args, PROXY) {
+        match execute_curl_request(&url, "POST", curl_args, PROXY) {
             Ok(_) => println!("Requête réussie"),
             Err(e) => println!("Erreur lors de la requête : {}", e),
         }
@@ -33,7 +35,7 @@ pub fn delete(args: CliArgs) {
             "".to_string()
         };
 
-        let command = format!("curl{} -k -X DELETE {}", proxy, url);
+        let command = format!("curl{} -k --upload-file {} {}", proxy, source_file, url);
         cli_clipboard::set_contents(command.to_owned()).unwrap();
     }
 
