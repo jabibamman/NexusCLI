@@ -1,10 +1,15 @@
+use curl::easy::{Easy, ReadError};
 use std::collections::HashMap;
 use std::fs::File;
-use curl::easy::{Easy, ReadError};
-use std::io::{Read};
+use std::io::Read;
 use std::sync::{Arc, Mutex};
 
-pub fn execute_curl_request(url: &str, method: &str, args: HashMap<&str, &String>, proxy: Option<&str>) -> Result<(), curl::Error> {
+pub fn execute_curl_request(
+    url: &str,
+    method: &str,
+    args: HashMap<&str, &String>,
+    proxy: Option<&str>,
+) -> Result<(), curl::Error> {
     let mut easy = Easy::new();
     easy.url(url)?;
     easy.custom_request(method)?;
@@ -17,7 +22,8 @@ pub fn execute_curl_request(url: &str, method: &str, args: HashMap<&str, &String
         easy.upload(true)?;
         let mut file = File::open(filepath).expect("Le fichier n'a pas pu être ouvert");
         let file_contents = Arc::new(Mutex::new(Vec::new()));
-        file.read_to_end(&mut *file_contents.lock().unwrap()).expect("Échec de la lecture du fichier");
+        file.read_to_end(&mut *file_contents.lock().unwrap())
+            .expect("Échec de la lecture du fichier");
 
         let shared_contents = file_contents.clone();
 
@@ -32,11 +38,7 @@ pub fn execute_curl_request(url: &str, method: &str, args: HashMap<&str, &String
     }
 
     match easy.perform() {
-        Ok(_) => {
-            Ok(())
-        },
-        Err(e) => {
-            Err(e)
-        },
+        Ok(_) => Ok(()),
+        Err(e) => Err(e),
     }
 }
