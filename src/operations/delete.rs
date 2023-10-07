@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::process::exit;
 use crate::cli::parser::CliArgs;
 use cli_clipboard;
@@ -19,7 +20,9 @@ pub fn delete(args: CliArgs) {
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).unwrap();
     if input.trim().to_uppercase() == "O".to_uppercase() {
-        match execute_curl_request(&url, "DELETE", PROXY) {
+        let curl_args = HashMap::new();
+
+        match execute_curl_request(&url, "DELETE", curl_args,PROXY) {
             Ok(_) => println!("Requête réussie"),
             Err(e) => println!("Erreur lors de la requête : {}", e),
         }
