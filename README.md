@@ -1,3 +1,5 @@
+[![wakatime](https://wakatime.com/badge/user/e52bef9d-e298-4ffd-b606-f63f36526478/project/018b063f-0deb-4974-a627-800e4e8ba9a8.svg)](https://wakatime.com/badge/user/e52bef9d-e298-4ffd-b606-f63f36526478/project/018b063f-0deb-4974-a627-800e4e8ba9a8)
+
 # NexusCLI
 
 ## Table of Contents
