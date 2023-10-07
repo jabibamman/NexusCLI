@@ -1,11 +1,11 @@
-mod operations;
 mod cli;
+mod operations;
 mod utils;
 
-use clap::{Parser};
 use crate::cli::parser::CliArgs;
 use crate::operations::delete::delete;
 use crate::operations::upload::upload;
+use clap::Parser;
 
 include!(concat!(env!("OUT_DIR"), "/domain.rs"));
 

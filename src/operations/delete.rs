@@ -1,28 +1,27 @@
-use std::collections::HashMap;
-use std::process::exit;
 use crate::cli::parser::CliArgs;
-use cli_clipboard;
+use crate::utils::network_utils::execute_curl_request;
 use crate::DOMAIN;
 use crate::PROXY;
-use crate::utils::network_utils::execute_curl_request;
+use cli_clipboard;
+use std::collections::HashMap;
+use std::process::exit;
 
 pub fn delete(args: CliArgs) {
-    let repository:&str = args.repository.as_ref().unwrap();
+    let repository: &str = args.repository.as_ref().unwrap();
     let directory = args.directory.as_ref().unwrap();
-    let url = format!("{}/repository/{}/{}",
-                      DOMAIN,
-                      repository,
-                      directory,
-    );
+    let url = format!("{}/repository/{}/{}", DOMAIN, repository, directory,);
 
-    println!("Voulez-vous éxecuter la commande DELETE curl avec l'url : {}", url);
+    println!(
+        "Voulez-vous éxecuter la commande DELETE curl avec l'url : {}",
+        url
+    );
     println!("O/N");
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).unwrap();
     if input.trim().to_uppercase() == "O".to_uppercase() {
         let curl_args = HashMap::new();
 
-        match execute_curl_request(&url, "DELETE", curl_args,PROXY) {
+        match execute_curl_request(&url, "DELETE", curl_args, PROXY) {
             Ok(_) => println!("Requête réussie"),
             Err(e) => println!("Erreur lors de la requête : {}", e),
         }

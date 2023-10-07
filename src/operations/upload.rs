@@ -1,26 +1,24 @@
-use std::collections::HashMap;
-use std::process::exit;
 use crate::cli::parser::CliArgs;
-use cli_clipboard;
+use crate::utils::network_utils::execute_curl_request;
 use crate::DOMAIN;
 use crate::PROXY;
-use crate::utils::network_utils::execute_curl_request;
+use cli_clipboard;
+use std::collections::HashMap;
+use std::process::exit;
 
 pub fn upload(args: CliArgs) {
-
-    let repository:&str = args.repository.as_ref().unwrap();
+    let repository: &str = args.repository.as_ref().unwrap();
     let directory = args.directory.as_ref().unwrap();
-    let url = format!("{}/repository/{}/{}",
-                      DOMAIN,
-                      repository,
-                      directory,
-    );
+    let url = format!("{}/repository/{}/{}", DOMAIN, repository, directory,);
 
     let mut curl_args = HashMap::new();
     let source_file = args.source.as_ref().unwrap();
     curl_args.insert("upload-file", source_file);
 
-    println!("Voulez-vous éxecuter la commande POST curl avec l'url : {}", url);
+    println!(
+        "Voulez-vous éxecuter la commande POST curl avec l'url : {}",
+        url
+    );
     println!("O/N");
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).unwrap();
