@@ -11,16 +11,17 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     env:
       DOMAIN: https://loremipsum.com
       PROXY: lorempisum.com
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - uses: actions/checkout@v3
+      - name: Setup .env
+        run: |
+          echo "DOMAIN=${{ env.DOMAIN }}" >> .env
+          echo "PROXY=${{ env.PROXY }}" >> .env
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
