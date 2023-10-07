@@ -14,6 +14,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      DOMAIN: https://loremipsum.com
+      PROXY: lorempisum.com
+
     steps:
     - uses: actions/checkout@v3
     - name: Build
