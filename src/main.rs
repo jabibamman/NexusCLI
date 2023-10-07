@@ -1,13 +1,8 @@
-mod cli;
-mod operations;
-mod utils;
 
-use crate::cli::parser::CliArgs;
-use crate::operations::delete::delete;
-use crate::operations::upload::upload;
+use NexusCLI::cli::parser::CliArgs;
+use NexusCLI::operations::delete::delete;
+use NexusCLI::operations::upload::upload;
 use clap::Parser;
-
-include!(concat!(env!("OUT_DIR"), "/domain.rs"));
 
 fn main() {
     let args = CliArgs::parse();
