@@ -1,8 +1,7 @@
-
+use clap::Parser;
 use NexusCLI::cli::parser::CliArgs;
 use NexusCLI::operations::delete::delete;
 use NexusCLI::operations::upload::upload;
-use clap::Parser;
 
 fn main() {
     let args = CliArgs::parse();
