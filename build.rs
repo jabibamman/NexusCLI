@@ -4,11 +4,11 @@ use std::io::{Write, BufReader, BufRead};
 use std::path::Path;
 
 fn main() {
-    let out_dir = env::var_os("OUT_DIR").unwrap();
+    let out_dir = env::var_os("OUT_DIR").expect("OUT_DIR not found");
     let dest_path = Path::new(&out_dir).join("domain.rs");
-    let mut f = File::create(&dest_path).unwrap();
+    let mut f = File::create(&dest_path).expect("Unable to create file");
 
-    let input = File::open(".env").unwrap();
+    let input = File::open(".env").expect(".env file not found");
     let buffered = BufReader::new(input);
 
     let mut domain: Option<String> = None;
