@@ -47,6 +47,7 @@ cargo build --release
 ```
 
 ### Install as CLI
+
 To use NexusCLI as a global CLI command, either add the binary path to your PATH or move the binary to a folder already in your PATH:
 
 ```sh
