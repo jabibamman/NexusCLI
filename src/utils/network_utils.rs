@@ -22,7 +22,8 @@ pub fn execute_curl_request(
 
         let mut file = File::open(filepath).expect("Le fichier n'a pas pu être ouvert");
         let mut file_contents = Vec::new();
-        file.read_to_end(&mut file_contents).expect("Échec de la lecture du fichier");
+        file.read_to_end(&mut file_contents)
+            .expect("Échec de la lecture du fichier");
         let file_contents = file_contents;
         easy.read_function(move |buf| -> Result<usize, ReadError> {
             let mut slice = &file_contents[..];
@@ -37,7 +38,9 @@ pub fn execute_curl_request(
     match easy.perform() {
         Ok(_) => {
             let mut response_code = 0;
-            easy.response_code().map(|code| response_code = code).unwrap();
+            easy.response_code()
+                .map(|code| response_code = code)
+                .unwrap();
             if response_code >= 400 {
                 println!("Erreur lors de la requête : {}", response_code);
             }
@@ -47,6 +50,4 @@ pub fn execute_curl_request(
         }
         Err(e) => Err(e),
     }
-
-
 }
