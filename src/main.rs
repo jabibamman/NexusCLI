@@ -19,7 +19,7 @@ fn main() {
             }
 
             upload(args)
-        },
+        }
         "D" => delete(args),
         _ => eprintln!("Opération non reconnue"),
     }
