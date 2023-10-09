@@ -38,7 +38,18 @@ pub fn execute_curl_request(
     }
 
     match easy.perform() {
-        Ok(_) => Ok(()),
+        Ok(_) => {
+            let mut response_code = 0;
+            easy.response_code().map(|code| response_code = code).unwrap();
+            if response_code >= 400 {
+                println!("Erreur lors de la requête : {}", response_code);
+            }
+            println!("{}", response_code);
+
+            Ok(())
+        }
         Err(e) => Err(e),
     }
+
+
 }
