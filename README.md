@@ -61,13 +61,15 @@ cp target/release/NexusCLI /usr/local/bin/nexus
 ##### To upload a file:
 
 ```sh
-nexus --operation U -r depot-local
+nexus --operation U --repository depot-local --directory rp/omer/ihm/homere-DV05.zip --source /home/jabib/Downloads/homere-DV05.zip
+nexus -o U -r depot-local -d rp/omer/ihm/homere-DV05.zip -s /home/jabib/Downloads/homere-DV05.zip
 ```
 
 ##### To delete a file:
 
 ```sh
-nexus --operation D -r depot-local -d rp/omer/ihm/homere-DV05.zip
+nexus --operation D --repository depot-local --directory rp/omer/ihm/homere-DV05.zip
+nexus -o D -r depot-local -d rp/omer/ihm/homere-DV05.zip
 ```
 
 ## Contribution
