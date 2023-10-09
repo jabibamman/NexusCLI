@@ -23,7 +23,7 @@ pub fn upload(args: CliArgs) {
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).unwrap();
     if input.trim().to_uppercase() == "O".to_uppercase() {
-        match execute_curl_request(&url, "POST", curl_args, PROXY) {
+        match execute_curl_request(&url, "PUT", curl_args, PROXY) {
             Ok(_) => println!("Requête réussie"),
             Err(e) => println!("Erreur lors de la requête : {}", e),
         }

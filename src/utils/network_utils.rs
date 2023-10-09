@@ -2,7 +2,6 @@ use curl::easy::{Easy, ReadError};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-use std::sync::{Arc, Mutex};
 
 pub fn execute_curl_request(
     url: &str,
@@ -20,16 +19,13 @@ pub fn execute_curl_request(
 
     if let Some(filepath) = args.get("upload-file") {
         easy.upload(true)?;
+
         let mut file = File::open(filepath).expect("Le fichier n'a pas pu être ouvert");
-        let file_contents = Arc::new(Mutex::new(Vec::new()));
-        file.read_to_end(&mut *file_contents.lock().unwrap())
-            .expect("Échec de la lecture du fichier");
-
-        let shared_contents = file_contents.clone();
-
+        let mut file_contents = Vec::new();
+        file.read_to_end(&mut file_contents).expect("Échec de la lecture du fichier");
+        let file_contents = file_contents;
         easy.read_function(move |buf| -> Result<usize, ReadError> {
-            let locked = shared_contents.lock().unwrap();
-            let mut slice = &(*locked)[..];
+            let mut slice = &file_contents[..];
             match slice.read(buf) {
                 Ok(size) => Ok(size),
                 Err(_) => Err(ReadError::Abort),
@@ -37,6 +33,7 @@ pub fn execute_curl_request(
         })?;
     }
 
+    easy.verbose(true)?;
     match easy.perform() {
         Ok(_) => {
             let mut response_code = 0;
