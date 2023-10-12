@@ -1,7 +1,8 @@
-use curl::easy::{Easy, ReadError};
+use curl::easy::{Easy};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
+use crate::utils::easy_utils::read_file;
 
 pub fn execute_curl_request(
     url: &str,
@@ -24,14 +25,7 @@ pub fn execute_curl_request(
         let mut file_contents = Vec::new();
         file.read_to_end(&mut file_contents)
             .expect("Échec de la lecture du fichier");
-        let file_contents = file_contents;
-        easy.read_function(move |buf| -> Result<usize, ReadError> {
-            let mut slice = &file_contents[..];
-            match slice.read(buf) {
-                Ok(size) => Ok(size),
-                Err(_) => Err(ReadError::Abort),
-            }
-        })?;
+        read_file(filepath).expect("Erreur lors de la définition de la fonction de lecture");
     }
 
     easy.verbose(true)?;

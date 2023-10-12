@@ -1,10 +1,9 @@
 use crate::cli::parser::CliArgs;
-use curl::easy::{Easy, ReadError};
-use std::fs::File;
-use std::io::Read;
+use curl::easy::{Easy};
 use crate::DOMAIN;
 use crate::PROXY;
 use std::process::exit;
+use crate::utils::easy_utils::read_file;
 
 pub fn upload(args: CliArgs) {
     let repository: &str = args.repository.as_ref().unwrap();
@@ -27,17 +26,8 @@ pub fn upload(args: CliArgs) {
             easy.noproxy("insee.fr").expect("Erreur lors de la définition de noproxy");
         }
 
-        let mut file = File::open(&source_file).expect("Le fichier n'a pas pu être ouvert");
-        let mut file_contents = Vec::new();
-        file.read_to_end(&mut file_contents).expect("Échec de la lecture du fichier");
 
-        easy.read_function(move |buf| -> Result<usize, ReadError> {
-            let mut slice = &file_contents[..];
-            match slice.read(buf) {
-                Ok(size) => Ok(size),
-                Err(_) => Err(ReadError::Abort),
-            }
-        }).expect("Erreur lors de la définition de la fonction de lecture");
+        read_file(&source_file).expect("Erreur lors de la définition de la fonction de lecture");
         match easy.perform() {
             Ok(_) => {
                 if easy.response_code().expect("Erreur lors de la récupération du code de réponse") >= 300 {
