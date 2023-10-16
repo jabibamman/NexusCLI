@@ -1,8 +1,8 @@
-use curl::easy::{Easy};
+use crate::utils::easy_utils::read_file;
+use curl::easy::Easy;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-use crate::utils::easy_utils::read_file;
 
 pub fn execute_curl_request(
     url: &str,
