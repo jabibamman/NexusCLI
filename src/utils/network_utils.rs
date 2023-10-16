@@ -1,8 +1,8 @@
-use curl::easy::{Easy, ReadError};
+use crate::utils::easy_utils::read_file;
+use curl::easy::Easy;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-use std::sync::{Arc, Mutex};
 
 pub fn execute_curl_request(
     url: &str,
@@ -20,25 +20,28 @@ pub fn execute_curl_request(
 
     if let Some(filepath) = args.get("upload-file") {
         easy.upload(true)?;
+
         let mut file = File::open(filepath).expect("Le fichier n'a pas pu être ouvert");
-        let file_contents = Arc::new(Mutex::new(Vec::new()));
-        file.read_to_end(&mut *file_contents.lock().unwrap())
+        let mut file_contents = Vec::new();
+        file.read_to_end(&mut file_contents)
             .expect("Échec de la lecture du fichier");
-
-        let shared_contents = file_contents.clone();
-
-        easy.read_function(move |buf| -> Result<usize, ReadError> {
-            let locked = shared_contents.lock().unwrap();
-            let mut slice = &(*locked)[..];
-            match slice.read(buf) {
-                Ok(size) => Ok(size),
-                Err(_) => Err(ReadError::Abort),
-            }
-        })?;
+        read_file(filepath).expect("Erreur lors de la définition de la fonction de lecture");
     }
 
+    easy.verbose(true)?;
     match easy.perform() {
-        Ok(_) => Ok(()),
+        Ok(_) => {
+            let mut response_code = 0;
+            easy.response_code()
+                .map(|code| response_code = code)
+                .unwrap();
+            if response_code >= 400 {
+                println!("Erreur lors de la requête : {}", response_code);
+            }
+            println!("{}", response_code);
+
+            Ok(())
+        }
         Err(e) => Err(e),
     }
 }
